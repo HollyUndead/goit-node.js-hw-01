@@ -24,19 +24,19 @@ const addContact = async(contact) => {
     }
     allContacts.push(newContact)
     await fs.writeFile(baseDBPath, JSON.stringify(allContacts, null, 2))
-    return allContacts;
+    return newContact;
 }
 
 const removeContact = async(id)=>{
     const allContacts = await listContacts();
     const indexById = allContacts.findIndex((obj) => obj.id === id)
+    let removedContact;
     if(indexById > -1){
+        removedContact = allContacts[indexById]
         allContacts.splice(indexById, 1)
         await fs.writeFile(baseDBPath, JSON.stringify(allContacts, null, 2))
-        return allContacts
-    }else{
-        return 'this contact isnt exist'
     }
+    return removedContact || null
 }
 
 module.exports = {listContacts, getContacById, addContact, removeContact};
